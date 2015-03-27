@@ -1,0 +1,12 @@
+dist
+cabal-dev
+.cabal-sandbox
+cabal.sandbox.config
+*.o
+*.hi
+*.chi
+*.chs.h
+*.lksh*
+.virthualenv
+.psci_modules/
+test-output/

@@ -1,0 +1,79 @@
+name: pure11
+version: 0.2
+cabal-version: >=1.8
+build-type: Simple
+license: MIT
+license-file: LICENSE
+copyright: (c) 2013-14 Phil Freeman, (c) 2014 Gary Burgess, and other contributors
+maintainer: Andy Arvanitis <andy.arvanitis@gmail.com>
+stability: experimental
+synopsis: C++11 backend for the PureScript Programming Language Compiler
+description: A small strongly, statically typed programming language with expressive types, inspired by Haskell and compiling to C++11.
+category: Language
+Homepage: http://www.purescript.org/
+author: Phil Freeman <paf31@cantab.net>,
+        Gary Burgess <gary.burgess@gmail.com>,
+        Hardy Jones <jones3.hardy@gmail.com>,
+				Andy Arvanitis (pure11) <andy.arvanitis@gmail.com>
+
+extra-source-files: prelude/prelude.p11
+	                , include/*.hh
+                  , examples/passing/*.purs
+                  , examples/passing/*.p11
+                  , examples/failing/*.purs
+                  , examples/failing/*.p11
+
+source-repository head
+    type: git
+    location: https://github.com/andyarvanitis/pure11.git
+
+library
+    build-depends: purescript ==0.6.9.30,
+                   base >=4.6 && <5,
+                   containers -any,
+                   unordered-containers -any,
+                   directory >= 1.2,
+                   filepath -any,
+                   mtl >= 2.1.0 && < 2.3.0,
+                   parsec -any,
+                   transformers >= 0.4.0 && < 0.5,
+                   utf8-string >= 1 && < 2,
+                   pattern-arrows >= 0.0.2 && < 0.1,
+                   file-embed >= 0.0.7 && < 0.0.8,
+                   time -any,
+                   boxes >= 0.1.4 && < 0.2.0
+
+    exposed-modules: Language.PureScript.Cpp
+                     Language.PureScript.CodeGen.Cpp
+                     Language.PureScript.CodeGen.Cpp.AST
+                     Language.PureScript.CodeGen.Cpp.Common
+                     Language.PureScript.CodeGen.Cpp.Optimizer
+                     Language.PureScript.CodeGen.Cpp.Optimizer.Common
+                     Language.PureScript.CodeGen.Cpp.Optimizer.Inliner
+                     Language.PureScript.CodeGen.Cpp.Optimizer.MagicDo
+                     Language.PureScript.CodeGen.Cpp.Optimizer.TCO
+                     Language.PureScript.Pretty.Cpp
+    exposed: True
+    buildable: True
+    hs-source-dirs: src
+    other-modules: Paths_pure11
+    ghc-options: -Wall -O2
+
+executable pcc
+    build-depends: base >=4 && <5, containers -any, directory -any, filepath -any,
+                   mtl -any, optparse-applicative >= 0.10.0, parsec -any, pure11 -any,
+                   transformers -any
+    main-is: Main.hs
+    buildable: True
+    hs-source-dirs: pcc
+    other-modules:
+    ghc-options: -Wall -O2 -fno-warn-unused-do-bind
+
+test-suite tests
+    build-depends: base >=4 && <5, containers -any, directory -any,
+                   filepath -any, mtl -any, parsec -any, pure11 -any,
+                   transformers -any, process -any
+    type: exitcode-stdio-1.0
+    main-is: Main.hs
+    buildable: True
+    hs-source-dirs: tests
