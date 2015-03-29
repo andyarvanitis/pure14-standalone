@@ -1,5 +1,5 @@
-#ifndef Pure11_H
-#define Pure11_H
+#ifndef PureScript_HH
+#define PureScript_HH
 
 // Standard includes
 //
@@ -9,6 +9,8 @@
 #include <iostream>
 #include <stdexcept>
 #include "shared_list.hh"
+
+namespace PureScript {
 
 // Type support
 
@@ -76,5 +78,6 @@ constexpr auto instanceof(const std::shared_ptr<U>& a) -> std::shared_ptr<T> {
     return _;    \
   }()
 
+}
 
-#endif // Pure11_H
+#endif // PureScript_HH
