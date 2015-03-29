@@ -25,11 +25,10 @@ extra-source-files: prelude/prelude.p11
 
 source-repository head
     type: git
-    location: https://github.com/andyarvanitis/pure11.git
+    location: https://github.com/andyarvanitis/pure11-core-imp.git
 
 library
-    build-depends: purescript ==0.6.9.30,
-                   base >=4.6 && <5,
+    build-depends: base >=4.6 && <5,
                    containers -any,
                    unordered-containers -any,
                    directory >= 1.2,
@@ -41,8 +40,8 @@ library
                    pattern-arrows >= 0.0.2 && < 0.1,
                    file-embed >= 0.0.7 && < 0.0.8,
                    time -any,
-                   boxes >= 0.1.4 && < 0.2.0
-
+                   boxes >= 0.1.4 && < 0.2.0,
+                   purescript ==0.6.9.30
     exposed-modules: Language.PureScript.Cpp
                      Language.PureScript.CodeGen.Cpp
                      Language.PureScript.CodeGen.Cpp.AST
