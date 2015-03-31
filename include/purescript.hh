@@ -47,6 +47,25 @@ using runtime_error = std::runtime_error;
 
 // Function aliases
 
+#define DECLARE_BIND(N, ...) \
+template <typename... Args> \
+constexpr auto bind ## N(Args&&... args) -> decltype(std::bind(std::forward<Args>(args)..., __VA_ARGS__)) { \
+  return std::bind(std::forward<Args>(args)..., __VA_ARGS__); \
+} \
+
+#define PLACEHOLDER(N) std::forward<decltype(std::placeholders::_ ## N)>(std::placeholders::_ ## N)
+
+DECLARE_BIND(1, PLACEHOLDER(1))
+DECLARE_BIND(2, PLACEHOLDER(1), PLACEHOLDER(2))
+DECLARE_BIND(3, PLACEHOLDER(1), PLACEHOLDER(2), PLACEHOLDER(3))
+DECLARE_BIND(4, PLACEHOLDER(1), PLACEHOLDER(2), PLACEHOLDER(3), PLACEHOLDER(4))
+DECLARE_BIND(5, PLACEHOLDER(1), PLACEHOLDER(2), PLACEHOLDER(3), PLACEHOLDER(4), PLACEHOLDER(5))
+DECLARE_BIND(6, PLACEHOLDER(1), PLACEHOLDER(2), PLACEHOLDER(3), PLACEHOLDER(4), PLACEHOLDER(5), PLACEHOLDER(6))
+DECLARE_BIND(7, PLACEHOLDER(1), PLACEHOLDER(2), PLACEHOLDER(3), PLACEHOLDER(4), PLACEHOLDER(5), PLACEHOLDER(6), PLACEHOLDER(7))
+
+#undef DECLARE_BIND
+#undef PLACEHOLDER
+
 template <typename T, typename... ArgTypes>
 constexpr auto make_data(ArgTypes... args) -> typename ADT<T>::type {
   return ADT<T>::make(args...);
