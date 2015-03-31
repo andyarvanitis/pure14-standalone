@@ -43,6 +43,7 @@ template <typename T> using list = shared_list<T>;
 using list_index_type = list<void*>::size_type;
 using string = std::string;
 template <typename B> using eff_fn = std::function<B()>;
+using runtime_error = std::runtime_error;
 
 // Function aliases
 
