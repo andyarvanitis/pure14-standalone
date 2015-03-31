@@ -8,5 +8,6 @@ cabal.sandbox.config
 *.chs.h
 *.lksh*
 .virthualenv
+.DS_Store
 .psci_modules/
 test-output/
