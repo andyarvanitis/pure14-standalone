@@ -10,4 +10,5 @@ cabal.sandbox.config
 .virthualenv
 .DS_Store
 .psci_modules/
+.idea/
 test-output/
