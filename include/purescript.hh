@@ -47,24 +47,38 @@ using runtime_error = std::runtime_error;
 
 // Function aliases
 
+template <int N>
+struct Binds {
+};
+
+template <int N, typename... Args>
+constexpr auto bind(Args&&... args) -> decltype(Binds<N>::bind(std::forward<Args>(args)...)) {
+  return Binds<N>::bind(std::forward<Args>(args)...);
+}
+
 #define DECLARE_BIND(N, ...) \
-template <typename... Args> \
-constexpr auto bind ## N(Args&&... args) -> decltype(std::bind(std::forward<Args>(args)..., __VA_ARGS__)) { \
-  return std::bind(std::forward<Args>(args)..., __VA_ARGS__); \
-} \
+template <> \
+struct Binds<N> { \
+  template <typename... Args> \
+  static constexpr auto bind(Args&&... args) -> decltype(std::bind(std::forward<Args>(args)..., __VA_ARGS__)) { \
+    return std::bind(std::forward<Args>(args)..., __VA_ARGS__); \
+  } \
+};
 
-#define PLACEHOLDER(N) std::forward<decltype(std::placeholders::_ ## N)>(std::placeholders::_ ## N)
-
-DECLARE_BIND(1, PLACEHOLDER(1))
-DECLARE_BIND(2, PLACEHOLDER(1), PLACEHOLDER(2))
-DECLARE_BIND(3, PLACEHOLDER(1), PLACEHOLDER(2), PLACEHOLDER(3))
-DECLARE_BIND(4, PLACEHOLDER(1), PLACEHOLDER(2), PLACEHOLDER(3), PLACEHOLDER(4))
-DECLARE_BIND(5, PLACEHOLDER(1), PLACEHOLDER(2), PLACEHOLDER(3), PLACEHOLDER(4), PLACEHOLDER(5))
-DECLARE_BIND(6, PLACEHOLDER(1), PLACEHOLDER(2), PLACEHOLDER(3), PLACEHOLDER(4), PLACEHOLDER(5), PLACEHOLDER(6))
-DECLARE_BIND(7, PLACEHOLDER(1), PLACEHOLDER(2), PLACEHOLDER(3), PLACEHOLDER(4), PLACEHOLDER(5), PLACEHOLDER(6), PLACEHOLDER(7))
+DECLARE_BIND(1, std::placeholders::_1)
+DECLARE_BIND(2, std::placeholders::_1, std::placeholders::_2)
+DECLARE_BIND(3, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3)
+DECLARE_BIND(4, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4)
+DECLARE_BIND(5, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4,
+                std::placeholders::_5)
+DECLARE_BIND(6, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4,
+                std::placeholders::_5, std::placeholders::_6)
+DECLARE_BIND(7, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4,
+                std::placeholders::_5, std::placeholders::_6, std::placeholders::_7)
+DECLARE_BIND(8, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4,
+                std::placeholders::_5, std::placeholders::_6, std::placeholders::_7, std::placeholders::_8)
 
 #undef DECLARE_BIND
-#undef PLACEHOLDER
 
 template <typename T, typename... ArgTypes>
 constexpr auto construct(ArgTypes... args) -> typename ADT<T>::type {
