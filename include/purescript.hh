@@ -67,7 +67,7 @@ DECLARE_BIND(7, PLACEHOLDER(1), PLACEHOLDER(2), PLACEHOLDER(3), PLACEHOLDER(4), 
 #undef PLACEHOLDER
 
 template <typename T, typename... ArgTypes>
-constexpr auto make_data(ArgTypes... args) -> typename ADT<T>::type {
+constexpr auto construct(ArgTypes... args) -> typename ADT<T>::type {
   return ADT<T>::make(args...);
 }
 
@@ -88,12 +88,12 @@ constexpr auto instanceof(const std::shared_ptr<U>& a) -> std::shared_ptr<T> {
     struct {        \
       __VA_ARGS__;  \
     } s;            \
-    return make_data<decltype(s)>(); \
+    return construct<decltype(s)>(); \
   }()
 
 #define DATA_RECORD(data_type, ...) \
   []() { \
-    auto _ = make_data<data_type>(); \
+    auto _ = construct<data_type>(); \
     __VA_ARGS__; \
     return _;    \
   }()
