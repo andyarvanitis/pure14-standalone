@@ -47,38 +47,41 @@ using runtime_error = std::runtime_error;
 
 // Function aliases
 
-template <int N>
-struct Binds {
-};
-
-template <int N, typename... Args>
-constexpr auto bind(Args&&... args) -> decltype(Binds<N>::bind(std::forward<Args>(args)...)) {
-  return Binds<N>::bind(std::forward<Args>(args)...);
+namespace Private {
+  template <int N>
+  struct Bind {
+  };
 }
 
-#define DECLARE_BIND(N, ...) \
-template <> \
-struct Binds<N> { \
-  template <typename... Args> \
-  static constexpr auto bind(Args&&... args) -> decltype(std::bind(std::forward<Args>(args)..., __VA_ARGS__)) { \
-    return std::bind(std::forward<Args>(args)..., __VA_ARGS__); \
-  } \
-};
+template <int N, typename... Args>
+constexpr auto bind(Args&&... args) -> decltype(Private::Bind<N>::bind(std::forward<Args>(args)...)) {
+  return Private::Bind<N>::bind(std::forward<Args>(args)...);
+}
 
-DECLARE_BIND(1, std::placeholders::_1)
-DECLARE_BIND(2, std::placeholders::_1, std::placeholders::_2)
-DECLARE_BIND(3, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3)
-DECLARE_BIND(4, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4)
-DECLARE_BIND(5, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4,
-                std::placeholders::_5)
-DECLARE_BIND(6, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4,
-                std::placeholders::_5, std::placeholders::_6)
-DECLARE_BIND(7, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4,
-                std::placeholders::_5, std::placeholders::_6, std::placeholders::_7)
-DECLARE_BIND(8, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4,
-                std::placeholders::_5, std::placeholders::_6, std::placeholders::_7, std::placeholders::_8)
+#define BIND_WITH_PLACEHOLDERS(N, ...) \
+namespace Private { \
+  using namespace std::placeholders; \
+  template <> \
+  struct Bind<N> { \
+    template <typename... Args> \
+    static constexpr auto bind(Args&&... args) -> decltype(std::bind(std::forward<Args>(args)..., __VA_ARGS__)) { \
+      return std::bind(std::forward<Args>(args)..., __VA_ARGS__); \
+    } \
+  }; \
+}
 
-#undef DECLARE_BIND
+BIND_WITH_PLACEHOLDERS( 1, _1)
+BIND_WITH_PLACEHOLDERS( 2, _1, _2)
+BIND_WITH_PLACEHOLDERS( 3, _1, _2, _3)
+BIND_WITH_PLACEHOLDERS( 4, _1, _2, _3, _4)
+BIND_WITH_PLACEHOLDERS( 5, _1, _2, _3, _4, _5)
+BIND_WITH_PLACEHOLDERS( 6, _1, _2, _3, _4, _5, _6)
+BIND_WITH_PLACEHOLDERS( 7, _1, _2, _3, _4, _5, _6, _7)
+BIND_WITH_PLACEHOLDERS( 8, _1, _2, _3, _4, _5, _6, _7, _8)
+BIND_WITH_PLACEHOLDERS( 9, _1, _2, _3, _4, _5, _6, _7, _8, _9)
+BIND_WITH_PLACEHOLDERS(10, _1, _2, _3, _4, _5, _6, _7, _8, _9, _10)
+
+#undef BIND_WITH_PLACEHOLDERS
 
 template <typename T, typename... ArgTypes>
 constexpr auto construct(ArgTypes... args) -> typename ADT<T>::type {
