@@ -45,7 +45,7 @@ import Language.PureScript.CoreImp.Operators
 import Language.PureScript.Names
 import Language.PureScript.Options
 import Language.PureScript.Traversals (sndM)
-import Language.PureScript.Environment
+import Language.PureScript.Environment hiding (Data)
 import qualified Language.PureScript.Constants as C
 import qualified Language.PureScript.CoreImp.AST as CI
 import qualified Language.PureScript.Types as T
@@ -70,10 +70,11 @@ moduleToCpp env (Module coms mn imps exps foreigns decls) = do
   let isModuleEmpty = null exps
   comments <- not <$> asks optionsNoComments
   let header = if comments && not (null coms) then CppComment coms CppNoOp else CppNoOp
-  datas <- modDataToCpps
+  dataDecls <- modDatasToCpps
+  typeDecls <- modTypesToCpps
   let moduleBody = header : (CppInclude <$> cppImports')
                    ++ [CppNamespace (runModuleName mn) $
-                        (CppUseNamespace <$> cppImports') ++ datas ++ foreigns' ++ optimized]
+                        (CppUseNamespace <$> cppImports') ++ dataDecls ++ typeDecls ++ foreigns' ++ optimized]
   return $ case additional of
     MakeOptions -> moduleBody
     CompileOptions _ _ _ | not isModuleEmpty -> moduleBody
@@ -354,41 +355,64 @@ moduleToCpp env (Module coms mn imps exps foreigns decls) = do
         val = CppDataType qname tmps in
     flip CppInstanceOf val <$> exprToCpp expr
 
-  modDataToCpps :: m [Cpp]
-  modDataToCpps = do
-    let ds = M.toList
-               . M.mapWithKey (\k a -> snd a)
-               . M.filterWithKey (\(Qualified mn' _) _ -> mn' == Just mn)
-               . M.filter (isData . snd)
-               $ types env
-    let dtys = map (\(ty, DataType ts _) ->
-                     let name = qualifiedToStr' (Ident . runProperName) ty in
-                     CppStruct (name, Left (flip (,) 0 . runType . Template . fst <$> ts))
-                       [] []
-                       [CppFunction name [] [] [] [CppVirtual, CppDestructor, CppDefault] CppNoOp]
-               ) ds
-    let dcons = concatMap (\(ty, DataType ts cs) ->
-                            let super = qualifiedToStr' (Ident . runProperName) ty
-                                tmps = flip (,) 0 . runType . Template . fst <$> ts in
-                            map (\(ctor, fields) ->
-                              let name = '_' : runProperName ctor ++ "_"
-                                  args = zip (("value" ++) . show <$> [0..]) (typestr mn <$> fields) in
-                              CppStruct (name, Left tmps)
-                                        [(super, fst <$> tmps)]
-                                        []
-                                        (if null args
-                                          then []
-                                          else (flip CppVariableIntroduction Nothing <$> args) ++
-                                               [ CppFunction name [] args [] [CppConstructor] (CppBlock [])
-                                               , CppFunction name [] [] [] [CppConstructor, CppDelete] CppNoOp
-                                               ])
-                            ) cs
-                ) ds
-    return (dtys ++ dcons)
-    where
-      isData :: TypeKind -> Bool
-      isData DataType{} = True
-      isData _ = False
+  modDatasToCpps :: m [Cpp]
+  modDatasToCpps
+    | ds@(_:_) <- M.toList
+                 . M.mapWithKey (\k a -> snd a)
+                 . M.filterWithKey (\(Qualified mn' _) _ -> mn' == Just mn)
+                 . M.filter (isData . snd)
+                 $ types env = do
+      let dtys = map (\(ty, DataType ts _) ->
+                       let name = qualifiedToStr' (Ident . runProperName) ty in
+                       CppStruct (name, Left (flip (,) 0 . runType . Template . fst <$> ts))
+                         [] []
+                         [CppFunction name [] [] [] [CppVirtual, CppDestructor, CppDefault] CppNoOp]
+                 ) ds
+      let dcons = concatMap (\(ty, DataType ts cs) ->
+                              let super = qualifiedToStr' (Ident . runProperName) ty
+                                  tmps = flip (,) 0 . runType . Template . fst <$> ts in
+                              map (\(ctor, fields) ->
+                                let name = '_' : runProperName ctor ++ "_"
+                                    args = zip (("value" ++) . show <$> [0..]) (typestr mn <$> fields) in
+                                CppStruct (name, Left tmps)
+                                          [(super, fst <$> tmps)]
+                                          []
+                                          (if null args
+                                            then []
+                                            else (flip CppVariableIntroduction Nothing <$> args) ++
+                                                 [ CppFunction name [] args [] [CppConstructor] (CppBlock [])
+                                                 , CppFunction name [] [] [] [CppConstructor, CppDelete] CppNoOp
+                                                 ])
+                              ) cs
+                  ) ds
+      return (dtys ++ dcons)
+    | otherwise = return []
+
+  modTypesToCpps :: m [Cpp]
+  modTypesToCpps
+   | syns@(_:_) <- M.toList
+                   . M.filterWithKey (\(Qualified mn' _) _ -> mn' == Just mn)
+                   $ typeSynonyms env = do
+     -- let ts' = filter (isData' . snd . snd) ts
+     let tds = typeInfo <$> syns
+     return $ traceShow tds []
+   | otherwise = return []
+   where
+   -- isData' :: T.Type -> Bool
+   -- isData' (T.TypeConstructor name) | Just (d, DataType{}) <- M.lookup name (types env) = True
+   -- isData' _ = False
+   -- typeInfo :: (Qualified ProperName, ((String, b), T.Type)) -> (Qualified ProperName, (Qualified ProperName, [Type]))
+
+   -- typeInfo :: (Qualified ProperName, (a, T.Type)) -> (Qualified ProperName, (String, [String]))
+   typeInfo :: (Qualified ProperName, (a, T.Type)) -> (Qualified ProperName, Maybe Type)
+   typeInfo (syn, (_, T.TypeConstructor name))
+     | Just (_, DataType d _) <- M.lookup name (types env) =
+       (syn, Just $ Data (Native $ qualifiedToStr' (Ident . runProperName) name) (Template . fst <$> d))
+   typeInfo (syn, (_, ty)) = (syn, mktype mn ty)
+
+  isData :: TypeKind -> Bool
+  isData DataType{} = True
+  isData _ = False
 
   unaryToCpp :: UnaryOp -> CppUnaryOp
   unaryToCpp Negate = CppNegate
