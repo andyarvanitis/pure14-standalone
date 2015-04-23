@@ -50,7 +50,7 @@ class unsafe_any {
   }
 };
 
-using map = std::unordered_map<std::string, const unsafe_any>;
+using any_map = std::unordered_map<std::string, const unsafe_any>;
 
 } // namespace PureScript
 
