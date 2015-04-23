@@ -9,6 +9,7 @@
 #include <iostream>
 #include <stdexcept>
 #include "shared_list.hh"
+#include "any_map.hh"
 
 namespace PureScript {
 
@@ -98,23 +99,6 @@ constexpr auto instanceof(const std::shared_ptr<U>& a) -> std::shared_ptr<T> {
   return std::dynamic_pointer_cast<T>(a);
 }
 
-// Records support
-//
-#define RECORD(...) \
-  []() {            \
-    struct {        \
-      __VA_ARGS__;  \
-    } s;            \
-    return construct<decltype(s)>(); \
-  }()
-
-#define DATA_RECORD(data_type, ...) \
-  []() { \
-    auto _ = construct<data_type>(); \
-    __VA_ARGS__; \
-    return _;    \
-  }()
-
-}
+} // namespace PureScript
 
 #endif // PureScript_HH

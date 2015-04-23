@@ -6,6 +6,8 @@
 #include <vector>
 #include <string>
 
+namespace PureScript {
+
 template<class T>
 class shared_list {
 public:
@@ -165,5 +167,7 @@ public:
   }
 
 };
+
+} // namespace PureScript
 
 #endif // shared_list_H_
