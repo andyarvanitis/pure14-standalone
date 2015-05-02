@@ -16,8 +16,7 @@ author: Phil Freeman <paf31@cantab.net>,
         Hardy Jones <jones3.hardy@gmail.com>,
 				Andy Arvanitis (pure11) <andy.arvanitis@gmail.com>
 
-extra-source-files: prelude/prelude.purs
-	                , include/*.hh
+extra-source-files: include/*.hh
                   , examples/passing/*.purs
                   , examples/passing/*.p11
                   , examples/failing/*.purs
