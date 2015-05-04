@@ -28,6 +28,12 @@ using list = shared_list<T>;
 
 using list_index_type = list<void*>::size_type;
 
+template <typename R>
+struct fn_r {
+  template <typename T>
+  using type = fn<R,T>;
+};
+
 } // namespace PureScript
 
 #endif // PureScript_HH
