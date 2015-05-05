@@ -90,6 +90,13 @@ namespace Prelude {
 		};
 	}
 
+	template <typename T>
+	inline auto _eq__eq_(T e1) -> fn<T,bool> {
+		return [=](T e2) {
+			return e1 == e2;
+		};
+	}
+
 	inline auto boolAnd(bool x) -> fn<bool,bool> {
 		return [=](bool y) {
 			return x && y;
