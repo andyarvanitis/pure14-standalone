@@ -29,9 +29,9 @@ using list = shared_list<T>;
 using list_index_type = list<void*>::size_type;
 
 template <typename R>
-struct fn_r {
+struct fn_ {
   template <typename T>
-  using type = fn<R,T>;
+  using _ = fn<R,T>;
 };
 
 } // namespace PureScript
