@@ -1,6 +1,9 @@
 #ifndef PreludeFFI_HH
 #define PreludeFFI_HH
 
+// These are just temporary Prelude FFI stubs. This file will go away after
+// the PureScript FFI is refactored to handle non-JS FFIs.
+
 #include "purescript.hh"
 
 namespace Prelude {
@@ -21,6 +24,13 @@ namespace Prelude {
 
 	inline auto showCharImpl(char x) -> string {
 		return std::to_string(x);
+	}
+
+    template <typename A>
+	inline auto showArrayImpl(fn<A,list<A>> f) -> fn<list<A>,string> {
+		return [=](list<A> a) {
+		    return "";
+		};
 	}
 
 	inline auto numAdd(double x) -> fn<double,double> {
@@ -87,6 +97,15 @@ namespace Prelude {
 	inline auto refEq(T ref1) -> fn<T,bool> {
 		return [=](T ref2) {
 			return ref1 == ref2;
+		};
+	}
+
+    template <typename A>
+	inline auto eqArrayImpl(fn<A,fn<A,bool>> f) -> fn<list<A>,fn<list<A>,bool>> {
+        return [=](list<A> xs) {
+            return [=](list<A> ys) {
+                return false;
+            };
 		};
 	}
 

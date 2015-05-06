@@ -28,6 +28,7 @@ using list = shared_list<T>;
 
 using list_index_type = list<void*>::size_type;
 
+// Support for things like ((->) r)
 template <typename R>
 struct fn_ {
   template <typename T>
