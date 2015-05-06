@@ -120,6 +120,20 @@ namespace Prelude {
             return a.append(b);
         };
     }
+
+    template <typename A, typename B>
+    inline auto arrayMap(fn<A,B> f) -> fn<list<A>,list<B>> {
+        return [=](list<A> a) {
+            return list<B>();
+        };
+    }
+
+    template <typename A, typename B>
+    inline auto arrayBind(list<A> a) -> fn<fn<A,list<B>>,list<B>> {
+        return [=](fn<A,list<B>> f) {
+            return list<B>();
+        };
+    }
 }
 
 
