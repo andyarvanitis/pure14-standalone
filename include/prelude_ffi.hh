@@ -132,6 +132,15 @@ namespace Prelude {
     };
   }
 
+  namespace type {
+    struct Ordering;
+  }
+  template <typename T>
+  inline auto unsafeCompareImpl(std::shared_ptr<type::Ordering> lt) ->
+      fn<std::shared_ptr<type::Ordering>,fn<std::shared_ptr<type::Ordering>,fn<T,fn<T,std::shared_ptr<type::Ordering>>>>> {
+    return nullptr;
+  }
+
   template <typename A>
   inline auto concatArray(list<A> a) -> fn<list<A>,list<A>> {
     return [=](list<A> b) {
