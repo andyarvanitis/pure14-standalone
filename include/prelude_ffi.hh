@@ -31,10 +31,8 @@ namespace Prelude {
   }
 
   template <typename A>
-  inline auto showArrayImpl(fn<A,list<A>> f) -> fn<list<A>,string> {
-    return [=](list<A> a) {
-      return "";
-    };
+  inline auto showArrayImpl(fn<A,string> f) -> fn<list<A>,string> {
+    return nullptr;
   }
 
   inline auto numAdd(double x) -> fn<double,double> {
