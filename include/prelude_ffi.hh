@@ -10,6 +10,10 @@ namespace Prelude {
 
   using namespace PureScript;
 
+  namespace value {
+    struct Unit_;
+  }
+
   inline auto showStringImpl(string s) -> string {
     return s;
   }
@@ -189,6 +193,16 @@ namespace Control_Monad_Eff {
   inline auto returnE(A a) -> eff_fn<A> {
     return [=]() {
       return a;
+    };
+  }
+}
+
+namespace Console {
+  using namespace PureScript;
+  inline auto log(string s) -> eff_fn<std::shared_ptr<Prelude::value::Unit_>> {
+    return [=]() {
+      puts(s.c_str());
+      return nullptr;
     };
   }
 }
