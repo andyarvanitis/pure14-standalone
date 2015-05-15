@@ -205,5 +205,12 @@ namespace Console {
   }
 }
 
+namespace Test_Main {
+  using namespace PureScript;
+  inline auto throwError(string) -> eff_fn<std::shared_ptr<Prelude::value::Unit_>> {
+    return nullptr;
+  }
+}
+
 
 #endif // PreludeFFI_HH
