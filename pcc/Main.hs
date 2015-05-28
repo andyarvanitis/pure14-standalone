@@ -35,7 +35,7 @@ import System.Exit (exitSuccess, exitFailure)
 import System.IO.Error (tryIOError)
 
 import qualified Language.PureScript.Cpp as P
-import qualified Paths_pure11 as Paths
+import qualified Paths_pure14 as Paths
 
 
 data PSCMakeOptions = PSCMakeOptions

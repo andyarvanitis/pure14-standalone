@@ -1,4 +1,4 @@
-name: pure11
+name: pure14
 version: 0.2
 cabal-version: >=1.8
 build-type: Simple
@@ -14,7 +14,7 @@ Homepage: http://www.purescript.org/
 author: Phil Freeman <paf31@cantab.net>,
         Gary Burgess <gary.burgess@gmail.com>,
         Hardy Jones <jones3.hardy@gmail.com>,
-				Andy Arvanitis (pure11) <andy.arvanitis@gmail.com>
+				Andy Arvanitis (pure14) <andy.arvanitis@gmail.com>
 
 extra-source-files: include/*.hh
                   , examples/passing/*.purs
@@ -24,7 +24,7 @@ extra-source-files: include/*.hh
 
 source-repository head
     type: git
-    location: https://github.com/andyarvanitis/pure11-core-imp.git
+    location: https://github.com/andyarvanitis/pure14.git
 
 library
     build-depends: base >=4.6 && <5,
@@ -56,12 +56,12 @@ library
     exposed: True
     buildable: True
     hs-source-dirs: src
-    other-modules: Paths_pure11
+    other-modules: Paths_pure14
     ghc-options: -Wall -O2
 
 executable pcc
     build-depends: base >=4 && <5, containers -any, directory -any, filepath -any,
-                   mtl -any, optparse-applicative >= 0.10.0, parsec -any, pure11 -any,
+                   mtl -any, optparse-applicative >= 0.10.0, parsec -any, pure14 -any,
                    transformers -any, transformers-compat -any
     main-is: Main.hs
     buildable: True
@@ -71,7 +71,7 @@ executable pcc
 
 test-suite tests
     build-depends: base >=4 && <5, containers -any, directory -any,
-                   filepath -any, mtl -any, parsec -any, pure11 -any,
+                   filepath -any, mtl -any, parsec -any, pure14 -any,
                    transformers -any, process -any
     type: exitcode-stdio-1.0
     main-is: Main.hs
