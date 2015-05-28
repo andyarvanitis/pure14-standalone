@@ -55,7 +55,7 @@ A small strongly typed programming language with expressive types that compiles 
 
 #### Examples
 
-**`hello.p11`**
+**`hello.purs`**
 ```PureScript
 module Main where
   import Console
@@ -105,7 +105,7 @@ auto main(int, char *[]) -> int {
     return 0;
 }
 ```
-**`fib.p11`**
+**`fib.purs`**
 ```PureScript
 module Main where
   import Console
