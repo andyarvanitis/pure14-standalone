@@ -1,3 +1,17 @@
+///////////////////////////////////////////////////////////////////////////////
+//
+// Module      :  prelude_ffi.hh
+// Copyright   :  (c) Andy Arvanitis 2015
+// License     :  MIT
+//
+// Maintainer  :  Andy Arvanitis <andy.arvanitis@gmail.com>
+// Stability   :  experimental
+// Portability :
+//
+// Temporary prelude FFI stubs
+//
+///////////////////////////////////////////////////////////////////////////////
+//
 #ifndef PreludeFFI_HH
 #define PreludeFFI_HH
 

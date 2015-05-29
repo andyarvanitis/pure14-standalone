@@ -1,3 +1,17 @@
+///////////////////////////////////////////////////////////////////////////////
+//
+// Module      :  purescript.hh
+// Copyright   :  (c) Andy Arvanitis 2015
+// License     :  MIT
+//
+// Maintainer  :  Andy Arvanitis <andy.arvanitis@gmail.com>
+// Stability   :  experimental
+// Portability :
+//
+// Basic types and functions to support purescript-to-C++1x rendering
+//
+///////////////////////////////////////////////////////////////////////////////
+//
 #ifndef PureScript_HH
 #define PureScript_HH
 

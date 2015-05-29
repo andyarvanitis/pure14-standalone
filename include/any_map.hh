@@ -1,3 +1,17 @@
+///////////////////////////////////////////////////////////////////////////////
+//
+// Module      :  any_map.hh
+// Copyright   :  (c) Andy Arvanitis 2015
+// License     :  MIT
+//
+// Maintainer  :  Andy Arvanitis <andy.arvanitis@gmail.com>
+// Stability   :  experimental
+// Portability :
+//
+// Type to represent a hash map that can hold any data type
+//
+///////////////////////////////////////////////////////////////////////////////
+//
 #ifndef any_map_H_
 #define any_map_H_
 

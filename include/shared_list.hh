@@ -1,3 +1,17 @@
+///////////////////////////////////////////////////////////////////////////////
+//
+// Module      :  shared_list.hh
+// Copyright   :  (c) Andy Arvanitis 2015
+// License     :  MIT
+//
+// Maintainer  :  Andy Arvanitis <andy.arvanitis@gmail.com>
+// Stability   :  experimental
+// Portability :
+//
+// Type providing an STL-like list of shared (reference-counted) nodes
+//
+///////////////////////////////////////////////////////////////////////////////
+//
 #ifndef shared_list_H_
 #define shared_list_H_
 

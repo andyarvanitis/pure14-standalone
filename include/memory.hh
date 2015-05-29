@@ -1,3 +1,17 @@
+///////////////////////////////////////////////////////////////////////////////
+//
+// Module      :  memory.hh
+// Copyright   :  (c) Andy Arvanitis 2015
+// License     :  MIT
+//
+// Maintainer  :  Andy Arvanitis <andy.arvanitis@gmail.com>
+// Stability   :  experimental
+// Portability :
+//
+// Support for reference-count-based memory management
+//
+///////////////////////////////////////////////////////////////////////////////
+//
 #ifndef PS_memory_HH
 #define PS_memory_HH
 

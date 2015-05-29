@@ -1,3 +1,17 @@
+///////////////////////////////////////////////////////////////////////////////
+//
+// Module      :  bind.hh
+// Copyright   :  (c) Andy Arvanitis 2015
+// License     :  MIT
+//
+// Maintainer  :  Andy Arvanitis <andy.arvanitis@gmail.com>
+// Stability   :  experimental
+// Portability :
+//
+// Types, macros, and functions to support function partial application
+//
+///////////////////////////////////////////////////////////////////////////////
+//
 #ifndef PS_bind_HH
 #define PS_bind_HH
 
